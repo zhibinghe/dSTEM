@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1612235510499.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "6389B27C",
+    "lastKnownWriteTime" : 1612235640,
+    "last_content_update" : 1612235640,
+    "path" : "~/Documents/R/dSTEM/man/cpTest.Rd",
+    "project_path" : "man/cpTest.Rd",
+    "properties" : {
+        "cursorPosition" : "0,0",
+        "scrollLine" : "58"
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_doc"
+}

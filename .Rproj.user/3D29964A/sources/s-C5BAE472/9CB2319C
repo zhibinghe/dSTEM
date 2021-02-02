@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1612232543283.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "9CB2319C",
+    "lastKnownWriteTime" : 1612224291,
+    "last_content_update" : 1612224291,
+    "path" : "~/Dropbox/Change Points/Structure Breaks/main.R",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "216,33",
+        "scrollLine" : "202"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

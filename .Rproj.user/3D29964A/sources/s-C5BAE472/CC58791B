@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1612232473662.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "CC58791B",
+    "lastKnownWriteTime" : 1612224293,
+    "last_content_update" : 1612224293,
+    "path" : "~/Documents/R/dSTEM/R/conv.R",
+    "project_path" : "R/conv.R",
+    "properties" : {
+        "cursorPosition" : "10,12",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
