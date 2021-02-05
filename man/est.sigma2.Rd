@@ -2,20 +2,20 @@
 % Please edit documentation in R/main.R
 \name{est.sigma2}
 \alias{est.sigma2}
-\title{Estimate variance of smoothed Gaussian noise}
+\title{Estimate variance of smoothed Gaussian noise \eqn{Z_{\gamma}(t)}}
 \usage{
 est.sigma2(x, gamma, k = 0.5)
 }
 \arguments{
-\item{x}{numerical vector of second derivative of kernel smoothed data}
+\item{x}{numerical vector of second-order derivative of kernel smoothed data}
 
 \item{gamma}{bandwidth of Gaussian kernel}
 
-\item{k}{numerical value, local maxima (minima) are presumed beyond \eqn{Mean(x)\pm k*SD(x)}}
+\item{k}{numerical value, local maxima (minima) are presumed beyond \eqn{Mean(x) ± k*SD(x)}}
 }
 \value{
 value of estimated variance of smoothed noise
 }
 \description{
-Estimate variance of smoothed Gaussian noise
+Estimate variance of smoothed Gaussian noise through its second-order derivative
 }

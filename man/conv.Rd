@@ -2,23 +2,23 @@
 % Please edit documentation in R/conv.R
 \name{conv}
 \alias{conv}
-\title{Compute convolution function using FFT, same as the function 'conv' in matlab}
+\title{Compute convolution function using FFT}
 \usage{
 conv(u, v, shape = c("same", "full"))
 }
 \arguments{
-\item{u}{vector}
+\item{u}{numerical vector}
 
-\item{v}{vector}
+\item{v}{numerical vector, don't need to have the same length as \code{u}}
 
-\item{shape}{if 'same', return central part of the convolution, the same size as u;
-otherwise return the whole sequence with size length(u)+length(v)-1}
+\item{shape}{if 'same', return central part of the convolution and has the same size as \code{u};
+otherwise return the whole sequence of size \eqn{lenth(u)+length(v)-1}.}
 }
 \value{
 a vector of convolution, as specified by shape.
 }
 \description{
-Compute convolution function using FFT, same as the function 'conv' in matlab
+Compute convolution function using FFT, similar to \code{'conv'} in matlab
 }
 \examples{
 u = c(-1,2,3,-2,0,1,2)
@@ -26,5 +26,5 @@ v = c(2,4,-1,1)
 w = conv(u,v,'same')
 }
 \references{
-Matlab document on 'conv' \url{https://www.mathworks.com/help/matlab/ref/conv.html}
+Matlab document on \code{'conv'}: \url{https://www.mathworks.com/help/matlab/ref/conv.html}
 }

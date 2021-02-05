@@ -2,8 +2,7 @@
 % Please edit documentation in R/main.R
 \name{gen.signal}
 \alias{gen.signal}
-\title{Simulate different types of signal
-Nothing}
+\title{Simulate different types of signal}
 \usage{
 gen.signal(l, h, jump, b1, rep, shift)
 }
@@ -12,20 +11,19 @@ gen.signal(l, h, jump, b1, rep, shift)
 
 \item{h}{numerical vector of change-point locations}
 
-\item{jump}{vector of jump values at change-point locations}
+\item{jump}{numerical vector of jump height at change-point locations}
 
-\item{b1}{vector of piecewise slopes}
+\item{b1}{numerical vector of piecewise slopes}
 
 \item{rep}{number of periods if data is periodic}
 
-\item{shift}{vector of vertical shifts for each period}
+\item{shift}{numerical vector of vertical shifts for each period}
 }
 \value{
 a vector of simulated signal
 }
 \description{
 Simulate different types of signal
-Nothing
 }
 \examples{
 l = 1200
@@ -33,5 +31,5 @@ h = seq(150,by=150,length.out=6)
 jump = rep(0,7)
 beta1 = c(2,-1,2.5,-3,-0.2,2.5)/50
 beta1 = c(beta1,-sum(beta1*(c(h[1],diff(h))))/(l-tail(h,1)))
-signal = gen.signal(l=l,h=h,jump=jump,b1=beta1)
+signal = gen.signal(l,h,jump,beta1)
 }

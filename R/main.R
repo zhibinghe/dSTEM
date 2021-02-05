@@ -1,11 +1,11 @@
 #' Simulate different types of signal
-#' Nothing
+#'
 #' @param l length of data, if data is periodic then the length of period
 #' @param h numerical vector of change-point locations
-#' @param jump vector of jump values at change-point locations
-#' @param b1 vector of piecewise slopes
+#' @param jump numerical vector of jump height at change-point locations
+#' @param b1 numerical vector of piecewise slopes
 #' @param rep number of periods if data is periodic
-#' @param shift vector of vertical shifts for each period
+#' @param shift numerical vector of vertical shifts for each period
 #'
 #' @return a vector of simulated signal
 #' @export
@@ -16,7 +16,7 @@
 #' jump = rep(0,7)
 #' beta1 = c(2,-1,2.5,-3,-0.2,2.5)/50
 #' beta1 = c(beta1,-sum(beta1*(c(h[1],diff(h))))/(l-tail(h,1)))
-#' signal = gen.signal(l=l,h=h,jump=jump,b1=beta1)
+#' signal = gen.signal(l,h,jump,beta1)
 gen.signal = function(l,h,jump,b1,rep,shift){
   if(missing(rep)) rep = 1
   if(missing(shift)) shift = 0
@@ -66,11 +66,11 @@ smth.gau = function(x,gamma){
   return(sx/adj(w))
 }
 
-#' Estimate variance of smoothed Gaussian noise
-#'
-#' @param x numerical vector of second derivative of kernel smoothed data
+#' Estimate variance of smoothed Gaussian noise \eqn{Z_{\gamma}(t)}
+#' @description   Estimate variance of smoothed Gaussian noise through its second-order derivative
+#' @param x numerical vector of second-order derivative of kernel smoothed data
 #' @param gamma bandwidth of Gaussian kernel
-#' @param k numerical value, local maxima (minima) are presumed beyond \eqn{Mean(x)\pm k*SD(x)}
+#' @param k numerical value, local maxima (minima) are presumed beyond \eqn{Mean(x) ± k*SD(x)}
 #'
 #' @return value of estimated variance of smoothed noise
 #' @export
@@ -93,14 +93,13 @@ est.sigma2 = function(x,gamma,k=0.5){
 
 #' Estimate piecewise slope for piecewise linear signal
 #'
-#' @param x vector of raw data
-#' @param breaks vector of change-point locations
+#' @param x numerical vector of signal-plus-noise data
+#' @param breaks numerical vector of change-point locations
 #'
-#' @return a vector of piecewise slope
+#' @return a vector of estimated piecewise slope
+#' @import MASS
 #' @export
-#'
 est.slope = function(x,breaks){
-  # x is original data
   breaks = sort(breaks)
   k=length(breaks)
   slope = vector(length=k+1)
@@ -113,7 +112,7 @@ est.slope = function(x,breaks){
   return(slope)
 }
 
-#' Identifying paired local maxima and  local minima of the second-order derivative
+#' Identify pairwise local maxima and local minima of the second-order derivative
 #'
 #' @param vall vector of locations of significant local minima
 #' @param peak vector of locations of significant local maxima
@@ -265,13 +264,13 @@ cpTest = function(x,order,alpha,gamma,sigma,breaks,slope,untest,nu,is.constant,m
   return(list(peak=peak,vall=vall,thresh=pthresh))
 }
 
-#' Compute SNR of a certain location in signal-plus-noise data
+#' Compute SNR of a certain location of signal-plus-noise data
 #'
 #' @param order order of derivative of data
 #' @inheritParams smth.gau
-#' @param is.jump logical value indicating if the location to be tested is a jump
-#' @param jump jump value
-#' @param diffb difference of the slopes at two sides of the location
+#' @param is.jump logical value indicating if the location to be calculated is a jump point
+#' @param jump jump height
+#' @param diffb difference of the slopes on left and right sides of the location
 #' @param addb sum of the slopes, only used when order is 1
 #'
 #' @return a scalar of SNR
@@ -299,11 +298,11 @@ snr = function(order,gamma,is.jump,jump,diffb,addb){
 
 #' Compute TPR and FPR
 #'
-#' @param uh vector of estimated change-point locations
-#' @param th vector of true change-point locations
+#' @param uh numerical vector of estimated change-point locations
+#' @param th numerical vector of true change-point locations
 #' @param b  location tolerance, usually specified as the bandwidth \code{gamma}
 #'
-#' @return dataframe of \code{FDR} (FPR) and \code{Power} (TPR)
+#' @return a dataframe of \code{FDR} (FPR) and \code{Power} (TPR)
 #' @export
 #' @example
 Fdr = function(uh,th,b){
@@ -319,9 +318,9 @@ Fdr = function(uh,th,b){
   return(data.frame(matrix(c(FDR,Power),nrow=1,dimnames=list(NULL,c("FDR","Power")))))
 }
 
-#' Plot of data, first and  second-order derivative, and their local extrema
+#' Plot data sequence, first and second-order derivative, and their local extrema
 #'
-#' @param x vector of signal or signal-plus-noise data
+#' @param x numerical vector of signal or signal-plus-noise data
 #' @param order order of derivative of data
 #' @param icd.noise logical value indicating if data \code{x} includes noise
 #' @param H optional, vector of change-point locations

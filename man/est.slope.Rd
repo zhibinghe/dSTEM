@@ -7,12 +7,12 @@
 est.slope(x, breaks)
 }
 \arguments{
-\item{x}{vector of raw data}
+\item{x}{numerical vector of signal-plus-noise data}
 
-\item{breaks}{vector of change-point locations}
+\item{breaks}{numerical vector of change-point locations}
 }
 \value{
-a vector of piecewise slope
+a vector of estimated piecewise slope
 }
 \description{
 Estimate piecewise slope for piecewise linear signal

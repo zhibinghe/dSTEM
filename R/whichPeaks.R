@@ -1,10 +1,10 @@
-#' Find local maxima or minima
+#' Find local maxima and local minima
 #'
-#' @param x a vector with maxima or minima
-#' @param partial if 'true' endpoints will be considered
-#' @param decreasing find local minima if 'true', ortherwise local maxima
+#' @param x numerical vector contains local maxima (minima)
+#' @param partial logical value indicating if the two endpoints will be considered
+#' @param decreasing logical value indicating whether to find local minima
 #'
-#' @return a vector of positions of local maxima or minima
+#' @return a vector of locations of local maxima or minima
 #' @export
 #'
 #' @examples

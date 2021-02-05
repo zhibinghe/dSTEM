@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1612499358542.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "86384D04",
+    "lastKnownWriteTime" : 1612500934,
+    "last_content_update" : 1612500934669,
+    "path" : "~/Dropbox/Change Points/ChangePoint_EJS/cp_reg.R",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "22,23",
+        "scrollLine" : "34"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

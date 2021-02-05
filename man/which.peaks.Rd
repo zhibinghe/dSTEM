@@ -2,22 +2,22 @@
 % Please edit documentation in R/whichPeaks.R
 \name{which.peaks}
 \alias{which.peaks}
-\title{Find local maxima or minima}
+\title{Find local maxima and local minima}
 \usage{
 which.peaks(x, partial = FALSE, decreasing = FALSE)
 }
 \arguments{
-\item{x}{a vector with maxima or minima}
+\item{x}{numerical vector contains local maxima (minima)}
 
-\item{partial}{if 'true' endpoints will be considered}
+\item{partial}{logical value indicating if the two endpoints will be considered}
 
-\item{decreasing}{find local minima if 'true', ortherwise local maxima}
+\item{decreasing}{logical value indicating whether to find local minima}
 }
 \value{
-a vector of positions of local maxima or minima
+a vector of locations of local maxima or minima
 }
 \description{
-Find local maxima or minima
+Find local maxima and local minima
 }
 \examples{
 a = 100:1

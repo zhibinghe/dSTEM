@@ -2,7 +2,7 @@
 % Please edit documentation in R/main.R
 \name{est.pair}
 \alias{est.pair}
-\title{Identifying paired local maxima and  local minima of the second-order derivative}
+\title{Identify pairwise local maxima and local minima of the second-order derivative}
 \usage{
 est.pair(vall, peak, gamma)
 }
@@ -17,5 +17,5 @@ est.pair(vall, peak, gamma)
 a list of detected pairs and detected change-point locations through second-order derivative testing
 }
 \description{
-Identifying paired local maxima and  local minima of the second-order derivative
+Identify pairwise local maxima and local minima of the second-order derivative
 }

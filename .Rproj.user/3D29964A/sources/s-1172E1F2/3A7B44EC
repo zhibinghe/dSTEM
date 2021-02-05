@@ -1,21 +1,21 @@
 {
     "collab_server" : "",
     "contents" : "",
-    "created" : 1612232473662.000,
+    "created" : 1612507073249.000,
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
     "hash" : "0",
-    "id" : "CC58791B",
-    "lastKnownWriteTime" : 1612224293,
-    "last_content_update" : 1612224293,
+    "id" : "3A7B44EC",
+    "lastKnownWriteTime" : 1612329960,
+    "last_content_update" : 1612329960,
     "path" : "~/Documents/R/dSTEM/R/conv.R",
     "project_path" : "R/conv.R",
     "properties" : {
-        "cursorPosition" : "10,12",
+        "cursorPosition" : "1,56",
         "scrollLine" : "0"
     },
-    "relative_order" : 2,
+    "relative_order" : 3,
     "source_on_save" : false,
     "source_window" : "",
     "type" : "r_source"

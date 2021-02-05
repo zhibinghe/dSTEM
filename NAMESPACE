@@ -14,3 +14,4 @@ export(which.peaks)
 import(MASS)
 importFrom("graphics", "abline", "axis", "legend", "plot", "points")
 importFrom("stats", "coef", "dnorm", "fft", "integrate", "pnorm", "sd", "var")
+ 

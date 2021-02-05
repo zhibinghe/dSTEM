@@ -1,0 +1,130 @@
+####################################################
+#### Change Points without jump
+l = 1200
+h = seq(150,by=150,length.out=6)
+jump = rep(0,7)
+beta1 = c(2,-1,2.5,-3,-0.2,2.5)/50
+beta1 = c(beta1,-sum(beta1*(c(h[1],diff(h))))/(l-tail(h,1)))
+#beta0 = cumsum(c(jump[1],-diff(beta1)*H + jump[-1]))
+signal = gen.signal(l,h,jump,beta1)
+#signal = gen.signal(l,h,jump,beta1,rep=10)
+gamma = 25
+noise = rnorm(length(signal),0,1)
+data = (signal+noise)
+dy = diff(smth.gau(data,gamma),na.rm=T)
+ddy = diff(dy[!is.na(dy)])
+#modeling
+model2 = cpTest(x=ddy,order=2,gamma=gamma,alpha=0.05)
+#Fdr(uh=c(model2$peak,model2$vall),th=sort(unlist(lapply(c(h,l),function(x) seq(x,by=l,length.out=10)))),b=gamma)
+
+#####change points whit jumps
+##piecewise constant jump
+l = 1200
+h = seq(150,by=150,length.out=6)
+jump = c(0,1.5,2,2.2,1.8,2,1.5)
+beta1 = rep(0,length(h)+1)
+signal = gen.signal(l,h,jump,beta1)
+#signal = gen.signal(l,h,jump,beta1,rep=10)
+gamma = 25
+noise = rnorm(length(signal),0,1)
+data = (signal+noise)
+dy = diff(smth.gau(data,gamma),na.rm=T)
+ddy = diff(dy[!is.na(dy)])
+model1 = cpTest(x=dy,order=1,alpha=0.05,gamma=gamma,is.constant=T)
+##piecewise linear with jump
+l = 1200
+h = seq(150,by=150,length.out=6)
+jump = c(0,1.5,2,2.2,1.8,2,1.5)*3
+beta1 = c(2,-1,2.5,-3,-0.2,2.5,-0.5)/50
+signal = gen.signal(l,h,jump,beta1)
+gamma=25
+noise = rnorm(length(signal),0,1)
+data = (signal+noise)
+dy = diff(smth.gau(data,gamma),na.rm=T)
+ddy = diff(dy[!is.na(dy)])
+#r = 10
+#signal = gen.signal(l,h,jump,beta1,rep=r)
+#breaks = sort(unlist(lapply(c(h,l),function(x) seq(x,by=l,length.out=r))))
+#model1 = cpTest(x=dy,order=1,alpha=0.05,gamma=gamma,breaks=breaks[-length(breaks)],slope=rep(beta1,r))
+model1 = cpTest(x=dy,order=1,alpha=0.05,gamma=gamma,breaks=h,slope=beta1)
+#Fdr(uh=c(model1$peak,model1$vall),th=breaks[-length(breaks)],b=gamma)
+# estimated
+model2 = cpTest(x=ddy,order=2,gamma=gamma,alpha=0.1)
+breaks = est.pair(model2$vall,model2$peak,gamma)$cp
+slope = est.slope(data,breaks)
+model1 = cpTest(x=dy,order=1,alpha=0.05,gamma=gamma,breaks=breaks,slope=slope)
+####################################################
+####### combine
+l = 2000
+h = seq(150,by=150,length.out=12)
+jump = c(rep(0,7),c(0,1.5,2,1.2,1.5,1.8))
+beta1 = c(c(2,-1,2.5,-3,-0.2,2.5,-0.5)/50,rep(0,6))
+signal = gen.signal(l,h,jump,beta1)
+gamma = 25
+noise = rnorm(length(signal),0,1)
+data = (signal+noise)
+dy = diff(smth.gau(data,gamma),na.rm=T)
+ddy = diff(dy[!is.na(dy)])
+## Modeling
+model2 = cpTest(x=ddy,order=2,gamma=gamma,alpha=0.1)
+breaks = est.pair(model2$vall,model2$peak,gamma)$cp
+slope = est.slope(data,breaks)
+model1 = cpTest(x=dy,order=1,alpha=0.05,gamma=gamma,breaks=breaks,slope=slope)
+
+# l = 300
+# h = seq(25,by=25,length.out=6)
+# jump = c(0,1.5,2,0.8,1.5,0.6,1.2)
+# beta1 = rep(0,length(h)+1)
+# signal = gen.signal(l,h,jump,beta1)
+# #signal = gen.signal(l,H,jump,beta1,10)
+# gamma = 25
+
+l = 2000
+h = seq(150,by=150,length.out=12)
+jump = c(rep(0,7),c(0,1.5,2,1.2,4,1.8))
+beta1 = c(c(2,-1,2.5,-3,-0.2,2.5,-0.5)/50,rep(0,6))
+signal = gen.signal(l,h,jump,beta1)
+
+signal0 = signal
+signal0[1500] = 4
+signal0[1350:1500]  = seq(signal[1350],4,length.out=151)
+signal0[1500:1650]  = seq(4,signal[1650],length.out=151)
+signal = signal0
+gamma = 25
+
+data = (signal+noise)
+dy = diff(smth.gaussian(data,window=10*gamma,alpha=5,tails=T),na.rm=T)
+ddy = diff(dy[!is.na(dy)])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

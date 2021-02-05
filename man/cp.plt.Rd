@@ -2,12 +2,12 @@
 % Please edit documentation in R/main.R
 \name{cp.plt}
 \alias{cp.plt}
-\title{Plot of data, first and  second-order derivative, and their local extrema}
+\title{Plot data sequence, first and second-order derivative, and their local extrema}
 \usage{
 cp.plt(x, order, icd.noise, H)
 }
 \arguments{
-\item{x}{vector of signal or signal-plus-noise data}
+\item{x}{numerical vector of signal or signal-plus-noise data}
 
 \item{order}{order of derivative of data}
 
@@ -19,7 +19,7 @@ cp.plt(x, order, icd.noise, H)
 plotting
 }
 \description{
-Plot of data, first and  second-order derivative, and their local extrema
+Plot data sequence, first and second-order derivative, and their local extrema
 }
 \examples{
 l = 1200

@@ -2,7 +2,7 @@
 % Please edit documentation in R/main.R
 \name{snr}
 \alias{snr}
-\title{Compute SNR of a certain location in signal-plus-noise data}
+\title{Compute SNR of a certain location of signal-plus-noise data}
 \usage{
 snr(order, gamma, is.jump, jump, diffb, addb)
 }
@@ -11,11 +11,11 @@ snr(order, gamma, is.jump, jump, diffb, addb)
 
 \item{gamma}{bandwidth of Gaussian kernel}
 
-\item{is.jump}{logical value indicating if the location to be tested is a jump}
+\item{is.jump}{logical value indicating if the location to be calculated is a jump point}
 
-\item{jump}{jump value}
+\item{jump}{jump height}
 
-\item{diffb}{difference of the slopes at two sides of the location}
+\item{diffb}{difference of the slopes on left and right sides of the location}
 
 \item{addb}{sum of the slopes, only used when order is 1}
 }
@@ -23,5 +23,5 @@ snr(order, gamma, is.jump, jump, diffb, addb)
 a scalar of SNR
 }
 \description{
-Compute SNR of a certain location in signal-plus-noise data
+Compute SNR of a certain location of signal-plus-noise data
 }
