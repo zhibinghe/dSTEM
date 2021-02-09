@@ -2,7 +2,7 @@
 % Please edit documentation in R/main.R
 \name{est.sigma2}
 \alias{est.sigma2}
-\title{Estimate variance of smoothed Gaussian noise \eqn{Z_{\gamma}(t)}}
+\title{Estimate variance of smoothed Gaussian noise}
 \usage{
 est.sigma2(x, gamma, k = 0.5)
 }

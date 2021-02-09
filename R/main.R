@@ -66,7 +66,7 @@ smth.gau = function(x,gamma){
   return(sx/adj(w))
 }
 
-#' Estimate variance of smoothed Gaussian noise \eqn{Z_{\gamma}(t)}
+#' Estimate variance of smoothed Gaussian noise
 #' @description   Estimate variance of smoothed Gaussian noise through its second-order derivative
 #' @param x numerical vector of second-order derivative of kernel smoothed data
 #' @param gamma bandwidth of Gaussian kernel
@@ -144,7 +144,7 @@ est.pair = function(vall,peak,gamma){
 #' @param order order of derivative of data
 #' @param alpha global significant level
 #' @inheritParams smth.gau
-#' @param sigma standard deviation of kernel smoothed noise, can be calculated through \code{gamma} and \code{nu}
+#' @param sigma standard deviation of kernel smoothed noise
 #' @param breaks vector of rough estimate of change-point locations, only required when order is 1.
 #' @param slope vector of rough estimate of slopes associated with \code{breaks}, only required when order is 1.
 #' @param untest vector of locations unnecessary to test
@@ -200,14 +200,11 @@ cpTest = function(x,order,alpha,gamma,sigma,breaks,slope,untest,nu,is.constant,m
   if(missing(gamma)) stop("gamma is required")
   if(missing(untest)) untest = NULL
   if(missing(is.constant)) is.constant = FALSE
-  #if(missing(sigma) && missing(nu)) stop("sigma is required")
   if(missing(nu)) nu = 0
-  if(missing(sigma)){
-    sigma = ifelse(order==1,sqrt(1/(4*(sqrt(gamma^2+nu^2))^3*sqrt(pi))),sqrt(3/(8*(sqrt(gamma^2+nu^2))^5*sqrt(pi))))}
-  else{
-    sigma = ifelse(order==1,sqrt(1/(4*sqrt(pi)*(1/(2*sqrt(pi)*sigma))^3)),
-                   sqrt(3/(8*sqrt(pi)*(1/(2*sqrt(pi)*sigma))^5)))}
   if(missing(margin)) margin = length(x)
+  if(missing(sigma)) xi = sqrt(gamma^2+nu^2)
+  else xi = sigma
+  sigma = ifelse(order==1,sqrt(1/(4*xi^3*sqrt(pi))),sqrt(3/(8*xi^5*sqrt(pi))))
   kappa = ifelse(order==1,3/sqrt(5),15/sqrt(105))
   len = length(x)
   margins = unlist(lapply((0:(len %/% margin))*margin, function(t)(t-ceiling(1.5*gamma)):(t+ceiling(1.5*gamma))))
@@ -222,11 +219,10 @@ cpTest = function(x,order,alpha,gamma,sigma,breaks,slope,untest,nu,is.constant,m
       if(i==1) seg = locind[locind<breaks[i]]
       else if(i==length(slope)) seg = locind[locind>=breaks[i-1]]
       else seg = locind[locind<breaks[i] & locind>=breaks[i-1]]
-      ty = append(ty,x[seg]-slope[i])
-    }
+      ty = append(ty,x[seg]-slope[i])}
     return(ty)
   }
-  #standardize: improve the accuracy of numerically computing p-value
+  #standardize: improve the accuracy of numerically computed p-value
   x = x/sigma
   # local extreme
   lmax = which.peaks(x)

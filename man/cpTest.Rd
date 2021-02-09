@@ -4,8 +4,19 @@
 \alias{cpTest}
 \title{Mutilple testing for change-point based on 'dSTEM' algorithm}
 \usage{
-cpTest(x, order, alpha, gamma, sigma, breaks, slope, untest, nu,
-  is.constant, margin)
+cpTest(
+  x,
+  order,
+  alpha,
+  gamma,
+  sigma,
+  breaks,
+  slope,
+  untest,
+  nu,
+  is.constant,
+  margin
+)
 }
 \arguments{
 \item{x}{vector of data to be tested}
@@ -16,7 +27,7 @@ cpTest(x, order, alpha, gamma, sigma, breaks, slope, untest, nu,
 
 \item{gamma}{bandwidth of Gaussian kernel}
 
-\item{sigma}{standard deviation of kernel smoothed noise, can be calculated through \code{gamma} and \code{nu}}
+\item{sigma}{standard deviation of kernel smoothed noise}
 
 \item{breaks}{vector of rough estimate of change-point locations, only required when order is 1.}
 
