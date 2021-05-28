@@ -15,9 +15,9 @@ gen.signal(l, h, jump, b1, rep, shift)
 
 \item{b1}{numerical vector of piecewise slopes}
 
-\item{rep}{number of periods if data is periodic}
+\item{rep}{number of periods if data is periodic, default is 1}
 
-\item{shift}{numerical vector of vertical shifts for each period}
+\item{shift}{numerical vector of vertical shifts for each period, default is 0}
 }
 \value{
 a vector of simulated signal

@@ -20,7 +20,7 @@ snr(order, gamma, is.jump, jump, diffb, addb)
 \item{addb}{sum of the slopes, only used when order is 1}
 }
 \value{
-a scalar of SNR
+value of SNR
 }
 \description{
 Compute SNR of a certain location of signal-plus-noise data

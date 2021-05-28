@@ -1,19 +1,19 @@
 {
     "collab_server" : "",
     "contents" : "",
-    "created" : 1612499358542.000,
+    "created" : 1622167416583.000,
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
     "hash" : "0",
-    "id" : "86384D04",
-    "lastKnownWriteTime" : 1612500934,
-    "last_content_update" : 1612500934669,
-    "path" : "~/Dropbox/Change Points/ChangePoint_EJS/cp_reg.R",
+    "id" : "6EC1F71B",
+    "lastKnownWriteTime" : 1622159049,
+    "last_content_update" : 1622159049,
+    "path" : "~/Dropbox/Change Points/Structure Breaks/code/Simulation.R",
     "project_path" : null,
     "properties" : {
-        "cursorPosition" : "22,23",
-        "scrollLine" : "34"
+        "cursorPosition" : "23,1",
+        "scrollLine" : "11"
     },
     "relative_order" : 2,
     "source_on_save" : false,

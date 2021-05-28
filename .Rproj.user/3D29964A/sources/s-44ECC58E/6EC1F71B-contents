@@ -1,0 +1,80 @@
+#devtools:install_github("zhibinghe/ChangePoint")
+library(MASS)
+library(dSTEM)
+#####
+gamma = 10
+#### Scenario 1: Conatin only line breaks
+l = 15000
+h = seq(150,l,150)
+jump = rep(0,length(h)+1)
+dk = 0.15 # dk = {0.15 0.2 0.3}
+beta1 = seq(from=0,by=dk,length = length(h)+1)
+signal = gen.signal(l,h,jump,beta1)
+#modeling
+R = 100 #repeatation
+D.linebreak = function(i){
+  noise = rnorm(length(signal),0,1) # white noise
+  data = (signal+noise)
+  # modelling
+  dy = diff(smth.gau(data,gamma),na.rm=T)
+  ddy = diff(dy[!is.na(dy)])
+  model2 = cpTest(x=ddy,order=2,gamma=gamma,alpha=0.05) # alpha = 0.05
+  fdr_pow = Fdr(uh=c(model2$peak),th=h[-length(h)],b=gamma) # b = gamma
+  return(fdr_pow)
+}
+out_linebreak = lapply(1:R,D.linebreak)
+colMeans(do.call("rbind",out_linebreak))
+#snr(order=2,gamma=gamma,is.jump=F,diffb=dk)
+
+#### Scenario 2: Contain only jump points
+## piecewise constant function
+l = 15000
+h = seq(150,l,150)
+jump = rep(1.5,length(h)+1) # jump = {1 1.5 2}
+beta1 = rep(0,length(h)+1)
+signal = gen.signal(l,h,jump,beta1)
+#modeling
+R = 100 #repeatation
+D.stepjump = function(i){
+  noise = rnorm(length(signal),0,1) # white noise
+  data = (signal+noise)
+  # modelling
+  dy = diff(smth.gau(data,gamma),na.rm=T)
+  ddy = diff(dy[!is.na(dy)])
+  model1 = cpTest(x=dy,order=1,alpha=0.05,gamma=gamma,is.constant=T) # alpha = 0.05
+  fdr_pow = Fdr(uh=c(model1$peak),th=h[-length(h)],b=gamma) # b = gamma
+  return(fdr_pow)
+}
+out_stepjump = lapply(1:R,D.stepjump)
+colMeans(do.call("rbind",out_stepjump))
+#snr(order=1,gamma=gamma,is.jump=T,jump=jump[1],addb=0)
+
+## Normal linear breaks
+## In this scenario, jump size should dominate the slope change in term of SNR
+l = 15000
+h = seq(150,l,150)
+jump = rep(2,length(h)+1) # jump = {2 2.5 3}
+addb = 0.05    # addb = 0.05
+beta1 = c(rep(c(0,addb),floor(length(h)/2)),0) # k_j + k_{j+1} = {0.02 0.05 0.1}
+signal = gen.signal(l,h,jump,beta1)
+#modeling
+R = 100 #repeatation
+D.linejump = function(i){
+  noise = rnorm(length(signal),0,1) # white noise
+  data = (signal+noise)
+  dy = diff(smth.gau(data,gamma),na.rm=T)
+  ddy = diff(dy[!is.na(dy)])
+  # modelling with true slopes
+  #model1 = cpTest(x=dy,order=1,alpha=0.05,gamma=gamma,breaks=h,slope=beta1)
+  # estimated location and slope
+  model2 = cpTest(x=ddy,order=2,gamma=gamma,alpha=0.1)
+  breaks = est.pair(model2$vall,model2$peak,gamma)$cp
+  slope = est.slope(data,breaks)
+  model1 = cpTest(x=dy,order=1,alpha=0.05,gamma=gamma,breaks=breaks,slope=slope)
+  fdr_pow = Fdr(uh=c(model1$peak),th=h[-length(h)],b=gamma) # b = gamma
+  return(fdr_pow)
+}
+out_linejump = lapply(1:R,D.linejump)
+colMeans(do.call("rbind",out_linejump))
+#snr(order=1,gamma=gamma,is.jump=T,jump=jump[1],addb=addb)
+#snr(order=2,gamma=gamma,is.jump=T,jump=jump[1],addb=addb,diffb=beta1[2]-beta1[1])

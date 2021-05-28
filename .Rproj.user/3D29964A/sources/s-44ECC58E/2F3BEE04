@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1622167291794.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "589338081",
+    "id" : "2F3BEE04",
+    "lastKnownWriteTime" : 1622167439,
+    "last_content_update" : 1622167439802,
+    "path" : "~/Documents/R/dSTEM/R/main.R",
+    "project_path" : "R/main.R",
+    "properties" : {
+        "cursorPosition" : "84,34",
+        "scrollLine" : "74"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

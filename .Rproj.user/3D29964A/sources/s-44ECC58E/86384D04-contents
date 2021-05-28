@@ -53,6 +53,7 @@ model2 = cpTest(x=ddy,order=2,gamma=gamma,alpha=0.1)
 breaks = est.pair(model2$vall,model2$peak,gamma)$cp
 slope = est.slope(data,breaks)
 model1 = cpTest(x=dy,order=1,alpha=0.05,gamma=gamma,breaks=breaks,slope=slope)
+
 ####################################################
 ####### combine
 l = 2000
@@ -70,6 +71,9 @@ model2 = cpTest(x=ddy,order=2,gamma=gamma,alpha=0.1)
 breaks = est.pair(model2$vall,model2$peak,gamma)$cp
 slope = est.slope(data,breaks)
 model1 = cpTest(x=dy,order=1,alpha=0.05,gamma=gamma,breaks=breaks,slope=slope)
+model3 = cpTest(x=ddy,order=2,gamma=gamma,alpha=0.05,untest=c(model1$peak,model1$vall))
+# t2 = unique(unlist(lapply(c(model1$peak,model1$vall),function(x) floor(x-1.5*gamma):ceiling(x+1.5*gamma))))
+# setdiff(breaks,t2)
 
 # l = 300
 # h = seq(25,by=25,length.out=6)
@@ -93,10 +97,36 @@ signal = signal0
 gamma = 25
 
 data = (signal+noise)
-dy = diff(smth.gaussian(data,window=10*gamma,alpha=5,tails=T),na.rm=T)
+dy = diff(smth.gau(data,gamma),na.rm=T)
 ddy = diff(dy[!is.na(dy)])
+## Modeling
+model2 = cpTest(x=ddy,order=2,gamma=gamma,alpha=0.1)
+breaks = est.pair(model2$vall,model2$peak,gamma)$cp
+slope = est.slope(data,breaks)
+model1 = cpTest(x=dy,order=1,alpha=0.05,gamma=gamma,breaks=breaks,slope=slope)
+model3 = cpTest(x=ddy,order=2,gamma=gamma,alpha=0.05,untest=c(model1$peak,model1$vall))
+# t2 = unique(unlist(lapply(c(model1$peak,model1$vall),function(x) floor(x-1.5*gamma):ceiling(x+1.5*gamma))))
+# setdiff(breaks,t2)
 
-
+## inscrease snr of jump point
+l = 2000
+h = seq(150,by=150,length.out=12)
+jump = c(rep(0,7),c(0,1.5,2,1.2,1.5,1.8))*20
+beta1 = c(c(2,-1,2.5,-3,-0.2,2.5,-0.5)/50,rep(0,6))
+signal = gen.signal(l,h,jump,beta1)
+gamma = 25 # 5
+noise = rnorm(length(signal),0,1)
+data = (signal+noise)
+dy = diff(smth.gau(data,gamma),na.rm=T)
+ddy = diff(dy[!is.na(dy)])
+## Modeling
+model2 = cpTest(x=ddy,order=2,gamma=gamma,alpha=0.1)
+breaks = est.pair(model2$vall,model2$peak,gamma)$cp
+slope = est.slope(data,breaks)
+model1 = cpTest(x=dy,order=1,alpha=0.05,gamma=gamma,breaks=breaks,slope=slope)
+model3 = cpTest(x=ddy,order=2,gamma=gamma,alpha=0.05,untest=c(model1$peak,model1$vall))
+# t2 = unique(unlist(lapply(c(model1$peak,model1$vall),function(x) floor(x-1.5*gamma):ceiling(x+1.5*gamma))))
+# setdiff(breaks,t2)
 
 
 

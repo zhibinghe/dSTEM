@@ -19,3 +19,12 @@ value of estimated variance of smoothed noise
 \description{
 Estimate variance of smoothed Gaussian noise through its second-order derivative
 }
+\examples{
+l=15000; h = seq(150,l,150)
+jump = rep(0,length(h)+1); b1 = seq(from=0,by=0.15,length = length(h)+1)
+signal = gen.signal(l,h,jump,b1)
+data = signal + rnorm(length(signal),0,1) # standard white noise
+gamma = 10
+ddy = diff(smth.gau(data,gamma),differences=2)
+est.sigma2(ddy,gamma,k=0.5) # true value is \eqn{\frac{1}{2\sqrt{pi}\gamma}}
+}
