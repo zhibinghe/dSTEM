@@ -294,8 +294,8 @@ snr = function(order,gamma,is.jump,jump,diffb,addb){
   }
   else{
     if(is.null(diffb)) stop("diffb is required")
-    SNR = ifelse(is.jump,2*gamma^(3/2)*exp(-0.5)/(sqrt(3)*pi^(1/4))*(diffb+jump/gamma),
-                 2*gamma^(3/2)/(sqrt(3)*pi^(1/4))*diffb)
+    if(!is.jump) SNR = 2*gamma^(3/2)/(sqrt(3)*pi^(1/4))*diffb
+    else SNR = dnorm(1)/gamma*c(jump/gamma+diffb, -jump/gamma+diffb)/sigma
   }
   return(abs(SNR))
 }
