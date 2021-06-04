@@ -107,15 +107,20 @@ est.sigma2 = function(x,gamma,k=0.5){
 #' @import MASS
 #' @export
 est.slope = function(x,breaks){
-  if(length(breaks)==0) stop("breaks cannot be empty")
-  breaks = sort(breaks)
-  k=length(breaks)
-  slope = vector(length=k+1)
-  for(i in 1:(k+1)){
-    if(i==1) seg = 1:breaks[i]
-    else if(i==k+1) seg = (breaks[i-1]+1):length(x)
-    else {seg=(breaks[i-1]+1):breaks[i]}
-    slope[i] = as.numeric(coef(MASS::rlm(y~t,data.frame(t=seg,y=x[seg])))[2])
+  if(length(breaks)==0){
+    t = 1:length(x)
+    slope = coef(lm(x~t))[2]
+  }
+  else{
+    breaks = sort(breaks)
+    k=length(breaks)
+    slope = vector(length=k+1)
+    for(i in 1:(k+1)){
+      if(i==1) seg = 1:breaks[i]
+      else if(i==k+1) seg = (breaks[i-1]+1):length(x)
+      else {seg=(breaks[i-1]+1):breaks[i]}
+      slope[i] = as.numeric(coef(MASS::rlm(y~t,data.frame(t=seg,y=x[seg])))[2])
+    }
   }
   return(slope)
 }
@@ -130,6 +135,7 @@ est.slope = function(x,breaks){
 #' @export
 #'
 est.pair = function(vall,peak,gamma){
+  # if paired, |peak-vall| should be around 2gamma
   fun = function(x,y){
     l1 = x-2.5*gamma
     l2 = x-1.5*gamma
@@ -137,13 +143,13 @@ est.pair = function(vall,peak,gamma){
     r2 = x+2.5*gamma
     t = y[which((y>=l1&y<=l2) | (y>=r1&y<=r2))]
     if(length(t)==0) t = NA
-    if(length(t)>1) t = t[which.min(abs(abs(t-x)-2*gamma))]
+    if(length(t)>1) t = t[which.min(abs(t-x))]
     return(t)
   }
   pair = sapply(vall,fun,y=peak)
   sigle = setdiff(peak,pair)
   pairs = as.data.frame(rbind(c(vall,sigle),c(pair,rep(NA,length(sigle)))))
-  return(list(pair=pairs,cp=sort(as.integer(as.vector(colMeans(pairs,na.rm=TRUE))))))
+  return(list(pair=pairs,cp=sort(as.integer(colMeans(pairs,na.rm=TRUE)))))
 }
 
 #' Mutilple testing for change-point based on 'dSTEM' algorithm
@@ -264,6 +270,8 @@ cpTest = function(x,order,alpha,gamma,sigma,breaks,slope,untest,nu,is.constant,m
     vall = intersect(c(lmax,lmin)[which(pval<=pthresh)],lmin)
     peak = peak[!(peak %in% margins)] # delete the margin points
     vall = vall[!(vall %in% margins)]
+    if(length(peak)==0) peak = NULL
+    if(length(vall)==0) vall = NULL
   }
   return(list(peak=peak,vall=vall,thresh=pthresh))
 }
