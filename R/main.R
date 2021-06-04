@@ -146,9 +146,10 @@ est.pair = function(vall,peak,gamma){
     if(length(t)>1) t = t[which.min(abs(t-x))]
     return(t)
   }
-  pair = sapply(vall,fun,y=peak)
-  sigle = setdiff(peak,pair)
-  pairs = as.data.frame(rbind(c(vall,sigle),c(pair,rep(NA,length(sigle)))))
+  if(length(vall)==0) pair = NULL
+  else pair = sapply(vall,fun,y=peak,simplify=TRUE)
+  single = setdiff(peak,pair)
+  pairs = as.data.frame(rbind(c(vall,single),c(pair,rep(NA,length(single)))))
   return(list(pair=pairs,cp=sort(as.integer(colMeans(pairs,na.rm=TRUE)))))
 }
 
