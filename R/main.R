@@ -153,9 +153,9 @@ est.pair = function(vall,peak,gamma){
   return(list(pair=pairs,cp=sort(as.integer(colMeans(pairs,na.rm=TRUE)))))
 }
 
-#' Mutilple testing for change-point based on 'dSTEM' algorithm
+#' Mutilple testing of change points for kernel smoothed data
 #'
-#' @param x vector of data to be tested
+#' @param x vector of kernel smoothed data
 #' @param order order of derivative of data
 #' @param alpha global significant level
 #' @inheritParams smth.gau
@@ -168,7 +168,7 @@ est.pair = function(vall,peak,gamma){
 #' @param is.constant logical value indicating if the signal is piecewise constant,
 #' if TRUE, \code{breaks} and \code{slope} are not necessary.
 #' @param margin length of one period of data \code{x}
-
+#'
 #' @return a list of estimated change-point locations and threshold for p-value
 #' @export
 #' @examples
@@ -276,7 +276,82 @@ cpTest = function(x,order,alpha,gamma,sigma,breaks,slope,untest,nu,is.constant,m
   }
   return(list(peak=peak,vall=vall,thresh=pthresh))
 }
+#' Detection of change points based on 'dSTEM' algorithm
+#'
+#' @param data vector of data sequence
+#' @param type "I" if the change points are piecewise linear and continuous;
+#'             "II-step" if the change points are piecewise constant and noncontinuous;
+#'             "II-linear" if the change points are piecewise linear and noncontinuous;
+#'             "mixture" if both type I and type II change points are inclued in \code{data}
+#' @inheritParams cpTest
+#' @inheritParams cpTest
 
+#' @seealso \code{\link{cpTest}}, \link[not]{features}
+#' @return if type is 'mixture', the output is a list of type I and type II change points,
+#'         otherwise, it is a list of positive and negative change points
+
+#' @export
+#' @examples
+#' ## piecewise linear signal
+#' l = 1200
+#' h = seq(150,by=150,length.out=6)
+#' jump = rep(0,7)
+#' beta1 = c(2,-1,2.5,-3,-0.2,2.5)/50
+#' beta1 = c(beta1,-sum(beta1*(c(h[1],diff(h))))/(l-tail(h,1)))
+#' signal = gen.signal(l,h,jump,beta1)
+#' noise = rnorm(length(signal),0,1)
+#' gamma = 25
+#' model = dstem(signal + noise,"I",gamma=gamma,alpha=0.05)
+#' ## piecewise constant
+#' l = 1200
+#' h = seq(150,by=150,length.out=6)
+#' jump = c(0,1.5,2,2.2,1.8,2,1.5)
+#' beta1 = rep(0,length(h)+1)
+#' signal = gen.signal(l,h,jump,beta1)
+#' noise = rnorm(length(signal),0,1)
+#' gamma = 25
+#' model = dstem(signal + noise, "II-step",gamma,alpha=0.05)
+#' ## piecewise linear with jump
+#' l = 1200
+#' h = seq(150,by=150,length.out=6)
+#' jump = c(0,1.5,2,2.2,1.8,2,1.5)*3
+#' beta1 = c(2,-1,2.5,-3,-0.2,2.5,-0.5)/50
+#' signal = gen.signal(l=l,h=h,jump=jump,b1=beta1)
+#' noise = rnorm(length(signal),0,1)
+#' gamma = 25
+#' model = dstem(signal + noise, "II-linear",gamma,alpha=0.05)
+dstem = function(data,type = c("I","II-step","II-linear","mixture"),gamma =20,alpha=0.05){
+  type = match.arg(type)
+  dy = diff(smth.gau(data,gamma))
+  ddy = diff(dy)
+  if (type == "I") {
+    est = cpTest(x=ddy,order=2,gamma=gamma,alpha=alpha)
+    out = list(vall = est$vall,peak = est$peak)
+  }
+  else if (type == "II-step") {
+    est = cpTest(x=dy,order=1,alpha=alpha,gamma=gamma,is.constant=T)
+    out = list(vall = est$vall,peak = est$peak)
+  }
+  else if (type == "II-linear") {
+    model2 = cpTest(x=ddy,order=2,gamma=gamma,alpha=2*alpha)
+    breaks = est.pair(model2$vall,model2$peak,gamma)$cp
+    slope = est.slope(data,breaks)
+    est = cpTest(x=dy,order=1,alpha=alpha,gamma=gamma,breaks=breaks,slope=slope)
+    out = list(vall = est$vall, peak = est$peak)
+  }
+  # mixture
+  else {
+    model2 = cpTest(x=ddy,order=2,gamma=gamma,alpha=2*alpha)
+    breaks = est.pair(model2$vall,model2$peak,gamma)$cp
+    if(length(breaks)==0) breaks = floor(length(data)/2)
+    slope = est.slope(data,breaks)
+    model1 = cpTest(x=dy,order=1,alpha=alpha,gamma=gamma,breaks=breaks,slope=slope)
+    jump_seg = unique(c(sapply(c(model1$peak,model1$vall),function(x) floor(x-2*gamma):ceiling(x+2*gamma))))
+    est = cpTest(x=ddy,order=2,gamma=gamma,alpha=alpha,untest=jump_seg)
+    out = list(type1 = list(vall=est$vall,peak=est$peak), type2 = list(vall=model1$vall,peak=model1$peak))
+  }
+  return(out)
+}
 #' Compute SNR of a certain location of signal-plus-noise data
 #'
 #' @param order order of derivative of data

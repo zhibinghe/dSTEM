@@ -2,7 +2,7 @@
 % Please edit documentation in R/main.R
 \name{cpTest}
 \alias{cpTest}
-\title{Mutilple testing for change-point based on 'dSTEM' algorithm}
+\title{Mutilple testing of change points for kernel smoothed data}
 \usage{
 cpTest(
   x,
@@ -19,7 +19,7 @@ cpTest(
 )
 }
 \arguments{
-\item{x}{vector of data to be tested}
+\item{x}{vector of kernel smoothed data}
 
 \item{order}{order of derivative of data}
 
@@ -47,7 +47,7 @@ if TRUE, \code{breaks} and \code{slope} are not necessary.}
 a list of estimated change-point locations and threshold for p-value
 }
 \description{
-Mutilple testing for change-point based on 'dSTEM' algorithm
+Mutilple testing of change points for kernel smoothed data
 }
 \examples{
 ## piecewise linear signal

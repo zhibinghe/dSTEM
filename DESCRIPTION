@@ -5,12 +5,13 @@ Version: 1.0-1
 Date: 2021-2-1
 Author: Zhibing He
 Maintainer: Zhibing He <zhibingh@asu.edu>
-Description: A new approach to detect change points based on smoothing and multiple testing, which is for long data sequence 
-             modeled as piecewise constant functions plus stationary Gaussian noise, see Dan Cheng and Armin Schwartzman (2015) <arXiv:1504.06384>.
+Description: A new approach to detect change points based on smoothing and multiple testing,
+             which is for long data sequence modeled as piecewise constant functions plus
+             stationary Gaussian noise, see Dan Cheng and Armin Schwartzman (2015).
 Depends: R (>= 3.1.0)
 Imports: MASS
-URL: https://arxiv.org/abs/1504.06384
+URL: https://doi.org/10.1214/20-EJS1751
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.0

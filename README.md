@@ -1,7 +1,7 @@
 # R Package: dSTEM (differential Smoothing and TEsting of Maxima/Minima)
 
 A new generic and fast approach for multiple change points detection in linear models. The method is designed for the data sequence 
-modeled as piecewise linear signal plus noise (comes from a stationary Gaussian proccess). 
+modeled as piecewise linear signal plus noise (a stationary Gaussian process). 
 
 # Toy Example of the Method
 
@@ -17,24 +17,20 @@ A toy example is illustrated in [toy1.pdf](https://github.com/zhibinghe/ChangePo
 The main function is 'cpTest()', which detect the change points in piecewise constant and piecewise linear signals.
 
 ``` r
-#' Mutilple testing for change-point based on 'dSTEM' algorithm
+#' Detection of change points based on 'dSTEM' algorithm
 #'
-#' @param x vector of data to be tested
-#' @param order order of derivative of data
-#' @param alpha global significant level
-#' @inheritParams smth.gau
-#' @param sigma standard deviation of kernel smoothed noise
-#' @param breaks vector of rough estimate of change-point locations, only required when order is 1.
-#' @param slope vector of rough estimate of slopes associated with \code{breaks}, only required when order is 1.
-#' @param untest vector of locations unnecessary to test
-#' @param nu standard deviation of Gaussian kernel used to generate autocorrelated Gaussian noise,
-#' it is 0 if the noise is Gaussian white noise.
-#' @param is.constant logical value indicating if the signal is piecewise constant,
-#' if TRUE, \code{breaks} and \code{slope} are not necessary.
-#' @param margin length of one period of data \code{x}
+#' @param data vector of data sequence
+#' @param type "I" if the change points are piecewise linear and continuous;
+#'             "II-step" if the change points are piecewise constant and noncontinuous;
+#'             "II-linear" if the change points are piecewise linear and noncontinuous;
+#'             "mixture" if both type I and type II change points are inclued in \code{data}
+#' @inheritParams cpTest
+#' @inheritParams cpTest
 
-#' @return a list of estimated change-point locations and threshold for p-value
+#' @seealso \code{\link{cpTest}}, \link[not]{features}
+#' @return if type is 'mixture', the output is a list of type I and type II change points, otherwise, it is a list of positive and negative change points
 
+#' @export
 #' @examples
 #' ## piecewise linear signal
 #' l = 1200
@@ -43,9 +39,25 @@ The main function is 'cpTest()', which detect the change points in piecewise con
 #' beta1 = c(2,-1,2.5,-3,-0.2,2.5)/50
 #' beta1 = c(beta1,-sum(beta1*(c(h[1],diff(h))))/(l-tail(h,1)))
 #' signal = gen.signal(l,h,jump,beta1)
-#' noise = rnorm(length(signal),0,2)
+#' noise = rnorm(length(signal),0,1)
 #' gamma = 25
-#' sdata = smth.gau(signal+noise,gamma)
-#' ddy = diff(sdata,differences=2)
-model = cpTest(x=ddy,order=2,gamma=gamma,alpha=0.05)
+#' model = dstem(signal + noise,"I",gamma=gamma,alpha=0.05)
+#' ## piecewise constant
+#' l = 1200
+#' h = seq(150,by=150,length.out=6)
+#' jump = c(0,1.5,2,2.2,1.8,2,1.5)
+#' beta1 = rep(0,length(h)+1)
+#' signal = gen.signal(l,h,jump,beta1)
+#' noise = rnorm(length(signal),0,1)
+#' gamma = 25
+#' model = dstem(signal + noise, "II-step",gamma,alpha=0.05)
+#' ## piecewise linear with jump
+#' l = 1200
+#' h = seq(150,by=150,length.out=6)
+#' jump = c(0,1.5,2,2.2,1.8,2,1.5)*3
+#' beta1 = c(2,-1,2.5,-3,-0.2,2.5,-0.5)/50
+#' signal = gen.signal(l=l,h=h,jump=jump,b1=beta1)
+#' noise = rnorm(length(signal),0,1)
+#' gamma = 25
+#' model = dstem(signal + noise, "II-linear",gamma,alpha=0.05)
 ```
