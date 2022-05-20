@@ -28,7 +28,8 @@ The main function is 'cpTest()', which detect the change points in piecewise con
 #' @inheritParams cpTest
 
 #' @seealso \code{\link{cpTest}}, \link[not]{features}
-#' @return if type is 'mixture', the output is a list of type I and type II change points, otherwise, it is a list of positive and negative change points
+#' @return if type is 'mixture', the output is a list of type I and type II change points, 
+           otherwise, it is a list of positive and negative change points
 
 #' @export
 #' @examples
