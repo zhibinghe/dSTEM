@@ -14,7 +14,7 @@ A toy example is illustrated in [toy1.pdf](https://github.com/zhibinghe/ChangePo
 
 # Usage
 
-The main function is 'cpTest()', which detect the change points in piecewise constant and piecewise linear signals.
+The main function is 'dstem()', which detect the change points in piecewise constant and piecewise linear signals.
 
 ``` r
 #' Detection of change points based on 'dSTEM' algorithm
