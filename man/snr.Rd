@@ -2,7 +2,7 @@
 % Please edit documentation in R/main.R
 \name{snr}
 \alias{snr}
-\title{Compute SNR of a certain location of signal-plus-noise data}
+\title{Compute SNR of a certain change point location}
 \usage{
 snr(order, gamma, is.jump, jump, diffb, addb)
 }
@@ -23,5 +23,5 @@ snr(order, gamma, is.jump, jump, diffb, addb)
 value of SNR
 }
 \description{
-Compute SNR of a certain location of signal-plus-noise data
+Compute SNR of a certain change point location
 }

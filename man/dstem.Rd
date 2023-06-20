@@ -17,7 +17,7 @@ dstem(
 \item{type}{"I" if the change points are piecewise linear and continuous;
 "II-step" if the change points are piecewise constant and noncontinuous;
 "II-linear" if the change points are piecewise linear and noncontinuous;
-"mixture" if both type I and type II change points are inclued in \code{data}}
+"mixture" if both type I and type II change points are include in \code{data}}
 
 \item{gamma}{bandwidth of Gaussian kernel}
 
@@ -25,7 +25,7 @@ dstem(
 }
 \value{
 if type is 'mixture', the output is a list of type I and type II change points,
-        otherwise, it is a list of positive and negative change points
+        otherwise, it is a list of change points
 }
 \description{
 Detection of change points based on 'dSTEM' algorithm
@@ -61,5 +61,5 @@ gamma = 25
 model = dstem(signal + noise, "II-linear",gamma,alpha=0.05)
 }
 \seealso{
-\code{\link{cpTest}}, \link[not]{features}
+\code{\link{cpTest}}
 }

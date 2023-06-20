@@ -2,7 +2,7 @@
 % Please edit documentation in R/main.R
 \name{cp.plt}
 \alias{cp.plt}
-\title{Plot data sequence, first and second-order derivative, and their local extrema}
+\title{Plot data sequence, the first and second-order derivatives, and their local extrema}
 \usage{
 cp.plt(x, order, icd.noise, H)
 }
@@ -11,15 +11,15 @@ cp.plt(x, order, icd.noise, H)
 
 \item{order}{order of derivative of data}
 
-\item{icd.noise}{logical value indicating if data \code{x} includes noise}
+\item{icd.noise}{logical value indicating if \code{x} includes noise}
 
 \item{H}{optional, vector of change-point locations}
 }
 \value{
-plotting
+a plot
 }
 \description{
-Plot data sequence, first and second-order derivative, and their local extrema
+Plot data sequence, the first and second-order derivatives, and their local extrema
 }
 \examples{
 l = 1200
@@ -36,4 +36,5 @@ cp.plt(signal,0,FALSE)
 points(signal+noise,col="grey")
 cp.plt(dy,1,H=h)
 cp.plt(ddy,2,H=h)
+
 }

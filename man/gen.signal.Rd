@@ -2,16 +2,16 @@
 % Please edit documentation in R/main.R
 \name{gen.signal}
 \alias{gen.signal}
-\title{Simulate different types of signal}
+\title{Generate simulated signals}
 \usage{
-gen.signal(l, h, jump, b1, rep, shift)
+gen.signal(l, h, jump, b1, rep = 1, shift = 0)
 }
 \arguments{
-\item{l}{length of data, if data is periodic then the length of period}
+\item{l}{length of data, if data is periodic then the length in each period}
 
-\item{h}{numerical vector of change-point locations}
+\item{h}{numerical vector of true change point locations}
 
-\item{jump}{numerical vector of jump height at change-point locations}
+\item{jump}{numerical vector of jump size at change point locations}
 
 \item{b1}{numerical vector of piecewise slopes}
 
@@ -23,7 +23,7 @@ gen.signal(l, h, jump, b1, rep, shift)
 a vector of simulated signal
 }
 \description{
-Simulate different types of signal
+Generate simulated signals
 }
 \examples{
 l = 1200

@@ -2,7 +2,7 @@
 % Please edit documentation in R/main.R
 \name{smth.gau}
 \alias{smth.gau}
-\title{Smooth data using Gaussian kernel}
+\title{Smoothing data using Gaussian kernel}
 \usage{
 smth.gau(x, gamma)
 }
@@ -15,8 +15,8 @@ smth.gau(x, gamma)
 vector of smoothed values
 }
 \description{
-Smooth data using Gaussian kernel
+Smoothing data using Gaussian kernel
 }
 \examples{
-smth.gau(x=rnorm(1000),gamma=20)
+smth.gau(x=rnorm(1000), gamma=20)
 }

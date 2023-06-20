@@ -2,7 +2,7 @@
 % Please edit documentation in R/fdrBH.R
 \name{fdrBH}
 \alias{fdrBH}
-\title{FDR threshold based on the Benjamini-Hochberg algorithm}
+\title{Compute FDR threshold based on Benjamini-Hochberg (BH) algorithm}
 \usage{
 fdrBH(p, q)
 }
@@ -15,8 +15,9 @@ fdrBH(p, q)
 p-value threshold based on independence or positive dependence
 }
 \description{
-FDR threshold based on the Benjamini-Hochberg algorithm
+Compute FDR threshold based on Benjamini-Hochberg (BH) algorithm
 }
 \examples{
 fdrBH(seq(0.01,0.1,0.01),q=0.1)
+
 }

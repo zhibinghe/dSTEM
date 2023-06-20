@@ -1,8 +1,8 @@
-#' Simulate different types of signal
+#' Generate simulated signals
 #'
-#' @param l length of data, if data is periodic then the length of period
-#' @param h numerical vector of change-point locations
-#' @param jump numerical vector of jump height at change-point locations
+#' @param l length of data, if data is periodic then the length in each period
+#' @param h numerical vector of true change point locations
+#' @param jump numerical vector of jump size at change point locations
 #' @param b1 numerical vector of piecewise slopes
 #' @param rep number of periods if data is periodic, default is 1
 #' @param shift numerical vector of vertical shifts for each period, default is 0
@@ -17,12 +17,10 @@
 #' beta1 = c(2,-1,2.5,-3,-0.2,2.5)/50
 #' beta1 = c(beta1,-sum(beta1*(c(h[1],diff(h))))/(l-tail(h,1)))
 #' signal = gen.signal(l,h,jump,beta1)
-gen.signal = function(l,h,jump,b1,rep,shift){
-  if(missing(rep)) rep = 1
-  if(missing(shift)) shift = 0
-  if(length(rep)!=length(shift)) stop("rep and shift should have the same length")
-  if(h[length(h)] > l) stop("h should not be greater than l")
-  if(length(jump)!=length(b1) | length(jump)!= length(h)+1)
+gen.signal = function(l, h, jump, b1, rep=1, shift=0){
+  if (length(rep)!=length(shift)) stop("rep and shift should have the same length")
+  if (h[length(h)] > l) stop("h should not be greater than l")
+  if (length(jump)!=length(b1) | length(jump)!= length(h)+1)
     stop("Length of jump or b1 is not matched with the length of h")
   f = function(b0){
     s = vector();t = 1:l
@@ -39,7 +37,7 @@ gen.signal = function(l,h,jump,b1,rep,shift){
   return(rep(f(b0),rep)+rep(shift,each=l))
 }
 
-#' Smooth data using Gaussian kernel
+#' Smoothing data using Gaussian kernel
 #'
 #' @param x numeric vector of values to smooth
 #' @param gamma bandwidth of Gaussian kernel
@@ -47,8 +45,8 @@ gen.signal = function(l,h,jump,b1,rep,shift){
 #' @return vector of smoothed values
 #' @export
 #' @examples
-#' smth.gau(x=rnorm(1000),gamma=20)
-smth.gau = function(x,gamma){
+#' smth.gau(x=rnorm(1000), gamma=20)
+smth.gau = function(x, gamma){
   # Gaussian kernel
   .kern = function(x,v=1){
     temp = exp(-x^2/(2*v^2))
@@ -82,8 +80,9 @@ smth.gau = function(x,gamma){
 #' gamma = 10
 #' ddy = diff(smth.gau(data,gamma),differences=2)
 #' est.sigma2(ddy,gamma,k=0.5) # true value is \eqn{\frac{1}{2\sqrt{pi}\gamma}}
-est.sigma2 = function(x,gamma,k=0.5){
-  lmax = which.peaks(x); lmin = which.peaks(x,decreasing=T)
+est.sigma2 = function(x, gamma, k=0.5){
+  lmax = which.peaks(x)
+  lmin = which.peaks(x, decreasing=T)
   J = c(x[lmax],-x[lmin])
   ind = c(lmax,lmin)[J>= mean(J)+k*sd(J)]
   delete = function(y){
@@ -98,7 +97,7 @@ est.sigma2 = function(x,gamma,k=0.5){
   return(1/(2*sqrt(pi)*(3/(8*sqrt(pi)*var2d))^(1/5)))
 }
 
-#' Estimate piecewise slope for piecewise linear signal
+#' Estimate piecewise slope for piecewise linear model
 #'
 #' @param x numerical vector of signal-plus-noise data
 #' @param breaks numerical vector of change-point locations
@@ -106,7 +105,7 @@ est.sigma2 = function(x,gamma,k=0.5){
 #' @return a vector of estimated piecewise slope
 #' @import MASS
 #' @export
-est.slope = function(x,breaks){
+est.slope = function(x, breaks){
   if(length(breaks)==0){
     t = 1:length(x)
     slope = coef(lm(x~t))[2]
@@ -134,7 +133,7 @@ est.slope = function(x,breaks){
 #' @return a list of detected pairs and detected change-point locations through second-order derivative testing
 #' @export
 #'
-est.pair = function(vall,peak,gamma){
+est.pair = function(vall, peak, gamma){
   # if paired, |peak-vall| should be around 2gamma
   fun = function(x,y){
     l1 = x-2.5*gamma
@@ -153,7 +152,7 @@ est.pair = function(vall,peak,gamma){
   return(list(pair=pairs,cp=sort(as.integer(colMeans(pairs,na.rm=TRUE)))))
 }
 
-#' Mutilple testing of change points for kernel smoothed data
+#' Multiple testing of change points for kernel smoothed data
 #'
 #' @param x vector of kernel smoothed data
 #' @param order order of derivative of data
@@ -282,13 +281,13 @@ cpTest = function(x,order,alpha,gamma,sigma,breaks,slope,untest,nu,is.constant,m
 #' @param type "I" if the change points are piecewise linear and continuous;
 #'             "II-step" if the change points are piecewise constant and noncontinuous;
 #'             "II-linear" if the change points are piecewise linear and noncontinuous;
-#'             "mixture" if both type I and type II change points are inclued in \code{data}
+#'             "mixture" if both type I and type II change points are include in \code{data}
 #' @inheritParams cpTest
 #' @inheritParams cpTest
 
-#' @seealso \code{\link{cpTest}}, \link[not]{features}
+#' @seealso \code{\link{cpTest}}
 #' @return if type is 'mixture', the output is a list of type I and type II change points,
-#'         otherwise, it is a list of positive and negative change points
+#'         otherwise, it is a list of change points
 
 #' @export
 #' @examples
@@ -320,7 +319,7 @@ cpTest = function(x,order,alpha,gamma,sigma,breaks,slope,untest,nu,is.constant,m
 #' noise = rnorm(length(signal),0,1)
 #' gamma = 25
 #' model = dstem(signal + noise, "II-linear",gamma,alpha=0.05)
-dstem = function(data,type = c("I","II-step","II-linear","mixture"),gamma =20,alpha=0.05){
+dstem = function(data,type = c("I","II-step","II-linear","mixture"), gamma =20, alpha=0.05){
   type = match.arg(type)
   dy = diff(smth.gau(data,gamma))
   ddy = diff(dy)
@@ -352,7 +351,7 @@ dstem = function(data,type = c("I","II-step","II-linear","mixture"),gamma =20,al
   }
   return(out)
 }
-#' Compute SNR of a certain location of signal-plus-noise data
+#' Compute SNR of a certain change point location
 #'
 #' @param order order of derivative of data
 #' @inheritParams smth.gau
@@ -363,7 +362,7 @@ dstem = function(data,type = c("I","II-step","II-linear","mixture"),gamma =20,al
 #'
 #' @return value of SNR
 #' @export
-snr = function(order,gamma,is.jump,jump,diffb,addb){
+snr = function(order, gamma, is.jump, jump, diffb, addb){
   if(!order %in% c(1,2))
     stop("Please specify 1 or 2 for the first or second derivative respectively")
   if(missing(addb)) addb = NULL
@@ -386,13 +385,13 @@ snr = function(order,gamma,is.jump,jump,diffb,addb){
 
 #' Compute TPR and FPR
 #'
-#' @param uh numerical vector of estimated change-point locations
-#' @param th numerical vector of true change-point locations
+#' @param uh numerical vector of estimated change point locations
+#' @param th numerical vector of true change point locations
 #' @param b  location tolerance, usually specified as the bandwidth \code{gamma}
 #'
 #' @return a dataframe of \code{FDR} (FPR) and \code{Power} (TPR)
 #' @export
-Fdr = function(uh,th,b){
+Fdr = function(uh, th, b){
   confband = function(th,b) unique(unlist(lapply(th,function(x){seq(ceiling(x-b),floor(x+b))})))
   if (length(uh)==0) {
     FDR = 0
@@ -405,14 +404,14 @@ Fdr = function(uh,th,b){
   return(data.frame(matrix(c(FDR,Power),nrow=1,dimnames=list(NULL,c("FDR","Power")))))
 }
 
-#' Plot data sequence, first and second-order derivative, and their local extrema
+#' Plot data sequence, the first and second-order derivatives, and their local extrema
 #'
 #' @param x numerical vector of signal or signal-plus-noise data
 #' @param order order of derivative of data
-#' @param icd.noise logical value indicating if data \code{x} includes noise
+#' @param icd.noise logical value indicating if \code{x} includes noise
 #' @param H optional, vector of change-point locations
 #'
-#' @return plotting
+#' @return a plot
 #' @import MASS
 #' @export
 #' @examples
@@ -430,6 +429,7 @@ Fdr = function(uh,th,b){
 #' points(signal+noise,col="grey")
 #' cp.plt(dy,1,H=h)
 #' cp.plt(ddy,2,H=h)
+#'
 cp.plt = function(x,order,icd.noise,H){
   if(!order %in% c(0,1,2)) stop("Please specify 0, 1 or 2 for original, first or second derivative")
   if(missing(icd.noise)) icd.noise = TRUE

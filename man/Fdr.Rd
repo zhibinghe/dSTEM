@@ -7,9 +7,9 @@
 Fdr(uh, th, b)
 }
 \arguments{
-\item{uh}{numerical vector of estimated change-point locations}
+\item{uh}{numerical vector of estimated change point locations}
 
-\item{th}{numerical vector of true change-point locations}
+\item{th}{numerical vector of true change point locations}
 
 \item{b}{location tolerance, usually specified as the bandwidth \code{gamma}}
 }

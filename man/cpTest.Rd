@@ -2,7 +2,7 @@
 % Please edit documentation in R/main.R
 \name{cpTest}
 \alias{cpTest}
-\title{Mutilple testing of change points for kernel smoothed data}
+\title{Multiple testing of change points for kernel smoothed data}
 \usage{
 cpTest(
   x,
@@ -47,7 +47,7 @@ if TRUE, \code{breaks} and \code{slope} are not necessary.}
 a list of estimated change-point locations and threshold for p-value
 }
 \description{
-Mutilple testing of change points for kernel smoothed data
+Multiple testing of change points for kernel smoothed data
 }
 \examples{
 ## piecewise linear signal

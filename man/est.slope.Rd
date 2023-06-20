@@ -2,7 +2,7 @@
 % Please edit documentation in R/main.R
 \name{est.slope}
 \alias{est.slope}
-\title{Estimate piecewise slope for piecewise linear signal}
+\title{Estimate piecewise slope for piecewise linear model}
 \usage{
 est.slope(x, breaks)
 }
@@ -15,5 +15,5 @@ est.slope(x, breaks)
 a vector of estimated piecewise slope
 }
 \description{
-Estimate piecewise slope for piecewise linear signal
+Estimate piecewise slope for piecewise linear model
 }

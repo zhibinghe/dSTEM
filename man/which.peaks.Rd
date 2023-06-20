@@ -2,7 +2,7 @@
 % Please edit documentation in R/whichPeaks.R
 \name{which.peaks}
 \alias{which.peaks}
-\title{Find local maxima and local minima}
+\title{Find local maxima and local minima of data sequence}
 \usage{
 which.peaks(x, partial = FALSE, decreasing = FALSE)
 }
@@ -17,7 +17,7 @@ which.peaks(x, partial = FALSE, decreasing = FALSE)
 a vector of locations of local maxima or minima
 }
 \description{
-Find local maxima and local minima
+Find local maxima and local minima of data sequence
 }
 \examples{
 a = 100:1
