@@ -25,7 +25,9 @@ multiple testing on the local maxima/minima, the significant ones are detected a
 
 For example, a continuous change point will be transformed into a local maximum/minimum in the second derivative of the smoothed data, 
 while a noncontinuous change point will be transformed into a local maximum/minimum in the first derivative of the smoothed data.
-A toy example is illustrated in
+A toy example is illustrated as follows
+
+
 ```{r, echo = FALSE}
 k1 = 0.08
 k2 = 0.15

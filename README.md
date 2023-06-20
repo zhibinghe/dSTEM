@@ -13,7 +13,9 @@ Toy Example of the Method
 
 The core idea of our method is to transform the change points into local maxima/minima of the differential smoothed data. By performing multiple testing on the local maxima/minima, the significant ones are detected as change points.
 
-For example, a continuous change point will be transformed into a local maximum/minimum in the second derivative of the smoothed data, while a noncontinuous change point will be transformed into a local maximum/minimum in the first derivative of the smoothed data. A toy example is illustrated in ![](README_files/figure-markdown_github/unnamed-chunk-2-1.png)
+For example, a continuous change point will be transformed into a local maximum/minimum in the second derivative of the smoothed data, while a noncontinuous change point will be transformed into a local maximum/minimum in the first derivative of the smoothed data. A toy example is illustrated as follows
+
+![](README_files/figure-markdown_github/unnamed-chunk-2-1.png)
 
 ![](README_files/figure-markdown_github/unnamed-chunk-3-1.png)![](README_files/figure-markdown_github/unnamed-chunk-3-2.png)
 
