@@ -1,16 +1,13 @@
 # R Package: dSTEM (differential Smoothing and TEsting of Maxima/Minima)
 
-A new generic and fast approach for multiple change points detection in linear models. The method is designed for the data sequence 
-modeled as piecewise linear signal plus noise (a stationary Gaussian process). 
+A new generic and fast approach for multiple change points detection in linear models. The method is designed for the data sequence modeled as piecewise linear signal plus a stationary Gaussian process. See the related papers "[Multiple testing of local extrema for detection of change points](https://projecteuclid.org/journals/electronic-journal-of-statistics/volume-14/issue-2/Multiple-testing-of-local-extrema-for-detection-of-change-points/10.1214/20-EJS1751.full)" and "[Multiple Testing of Local Extrema for Detection of Structural Breaks in Piecewise Linear Models](https://arxiv.org/pdf/2308.04368)".
 
-# Toy Example of the Method
+# Intuition of dSTEM
 
-The core idea of our method is to transform the change points into local maxima/minima of the differential smoothed data. By performing 
-multiple testing on the local maxima/minima, the significant ones are detected as change points.
+The core idea of our method is to transform the change points into local maxima/minima of the differential smoothed data. By performing multiple testing on the local maxima/minima, the significant ones are detected as change points.
 
-For example, a continuous change point will be transformed into a local maximum/minimum in the second derivative of the smoothed data, 
-while a noncontinuous change point will be transformed into a local maximum/minimum in the first derivative of the smoothed data.
-A toy example is illustrated in [toy1.pdf](https://github.com/zhibinghe/ChangePoint/files/8721035/illu1.pdf) and [toy2.pdf](https://github.com/zhibinghe/ChangePoint/files/8721085/Illu2_1.pdf).
+For example, a continuous change point (slope change) will be transformed into a local maximum/minimum in the second derivative of the smoothed data, while a noncontinuous change point (jump) will be transformed into a local maximum/minimum in the first derivative of the smoothed data.
+A toy example is illustrated in [toy1.pdf](https://github.com/zhibinghe/ChangePoint/files/8721035/illu1.pdf) and [toy2.pdf](https://github.com/zhibinghe/ChangePoint/files/8721085/Illu2_1.pdf). Detecion of change pints becomes the mulptiple testing problem of the local extrema.
 
 # Usage
 
