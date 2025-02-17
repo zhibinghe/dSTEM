@@ -15,8 +15,7 @@ set.seed(2021)
 ```
 ## dSTEM: differential Smoothing and TEsting of Maxima/Minima
 
-A new generic and low-computational approach for multiple change points detection in linear models. The method is designed for the data sequence modeled as piecewise linear signal plus correlated random noise (a stationary Gaussian process) <https://doi.org/10.1214/20-EJS1751>.
-The research paper for change point detection of general piecewise linear model will be available soon...
+A new generic and low-computational approach for multiple change points detection in linear models. The method is designed for the data sequence modeled as piecewise linear signal plus correlated random noise (a stationary Gaussian process). See the related papers: "[Multiple testing of local extrema for detection of change points](https://projecteuclid.org/journals/electronic-journal-of-statistics/volume-14/issue-2/Multiple-testing-of-local-extrema-for-detection-of-change-points/10.1214/20-EJS1751.full)" and "[Multiple testing of local extrema for detection of structural breaks in piecewise linear models](https://arxiv.org/pdf/2308.04368)".
 
 ## Toy Example of the Method
 
@@ -114,139 +113,6 @@ lines(loess(y2~x[floor(xmax2/2):xmax2],span=0.6),lwd=2,xlab="",ylab="")
 abline(v=v3,col="red",lty=2,lwd=1)
 points(x = c(v3-c*gamma,v3+c*gamma),y=y2[c(v3-c*gamma,v3+c*gamma)-floor(xmax2/2)],pch =16 ,col="blue")
 ```
-
-```{r, echo = FALSE}
-l = 1200
-h = seq(150,by=150,length.out=6)
-jump = rep(0,7)
-beta1 = c(2,-1,2.5,-3,-0.2,2.5)/50
-beta1 = c(beta1,-sum(beta1*(c(h[1],diff(h))))/(l-tail(h,1)))
-signal = gen.signal(l,h,jump,beta1)
-#signal = gen.signal(l,h,jump,beta1,rep=10)
-noise = rnorm(length(signal),0,1)
-data = (signal+noise)
-#modeling
-gamma = 20
-dy = diff(smth.gau(data,gamma),na.rm=T)
-ddy = diff(dy[!is.na(dy)])
-model1_2 = dstem(data,type="I",gamma,alpha = 0.05)
-##
-par(mfrow = c(2,2),mar=c(4,4,2,2))
-b = 8
-##
-col1 = "blue"; col2 = "darkorange"
-plot(data,col="grey",xlab="",ylab="",bty="n")
-title(xlab="t",ylab="y(t)",mgp=c(2.5,2.5,0),cex.lab=1.0)
-lines(signal,lwd=2,col="red")
-plot(ddy,type="l",lwd=2,xlab="",ylab="",bty="n")
-title(xlab="t",ylab=latex2exp::TeX("$y''_{\\gamma}(t)"),mgp=c(2.5,2.5,0),cex.lab=1.0)
-abline(h=0,lty=1,lwd=2,col="lightgrey")
-peak = which.peaks(ddy); val = which.peaks(ddy,decreasing = T)
-points(peak,ddy[peak],col=col1,pch=16,bg=col1)
-points(val,ddy[val],col=col2,pch=16,bg=col2)
-tpeak = model1_2$peak; tval = model1_2$vall
-points(tpeak,ddy[tpeak],col=col1,pch=24,bg=col1)
-points(tval,ddy[tval],col=col2,pch=25,bg=col2)
-Tmax = h[which(h %in% which.peaks(signal,decreasing=T))]; Tmin = h[which(h %in% which.peaks(signal))]
-for(i in 1:length(Tmax)) rect(Tmax[i]-b,0,Tmax[i]+b,1,col="cyan",lwd=1.5,density=0)
-for(i in 1:length(Tmin)) rect(Tmin[i]-b,0,Tmin[i]+b,-1,col="pink",lwd=1.5,density=0)
-
-#### Type II change points
-l = 1200
-h = seq(150,by=150,length.out=6)
-jump = c(0,1.5,2,-2.2,1.8,2,-1.5)*2
-beta1 = c(2,-1,1.5,-2.5,-0.2,2.5,-1)/50
-signal = gen.signal(l,h,jump,beta1)
-noise = rnorm(length(signal),0,1)
-data = (signal+noise)
-# modeling
-gamma = 10
-dy = diff(smth.gau(data,gamma),na.rm=T)
-ddy = diff(dy[!is.na(dy)])
-# estimated location and slope
-model2_1 = dstem(data,type="II-linear",alpha=0.05)
-##
-col3="green"; col4 = "red"
-plot(data,col="grey",xlab="",ylab="",bty="n")
-title(xlab="t",ylab="y(t)",mgp=c(2.5,2.5,0),cex.lab=1.0)
-#
-segment = split(1:l,cut(1:l,breaks=c(1,h,l),include.lowest = T))
-for(i in 1:length(segment)) lines(x=segment[[i]],y=signal[segment[[i]]],lwd=2,col="red")
-#
-plot(dy,type="l",lwd=2,xlab="",ylab="",bty="n")
-title(xlab="t",ylab=latex2exp::TeX("$y'_{\\gamma}(t)"),mgp=c(2.5,2.5,0),cex.lab=1.0)
-abline(h=0,lty=1,lwd=2,col="lightgrey")
-peak = which.peaks(dy); val = which.peaks(dy,decreasing = T)
-points(peak,dy[peak],col=col3,pch=16,bg=col3)
-points(val,dy[val],col=col4,pch=16,bg=col4)
-tpeak = model2_1$peak; tval = model2_1$vall
-points(tpeak,dy[tpeak],col=col3,pch=24,bg=col3)
-points(tval,dy[tval],col=col4,pch=25,bg=col4)
-Tmin = h[c(3,6)]; Tmax = h[c(1,2,4,5)]
-for(i in 1:length(Tmax)) rect(Tmax[i]-b,0,Tmax[i]+b,1,col="cyan",lwd=1.5,density=0)
-for(i in 1:length(Tmin)) rect(Tmin[i]-b,0,Tmin[i]+b,-1,col="pink",lwd=1.5,density=0)
-for(i in 1:length(segment)) lines(x=segment[[i]],y=rep(beta1[i],length(segment[[i]])),
-                                  lwd=2,col="darkgrey")
-##### Mixture of type I and type II
-l = 1500
-h = seq(150,by=150,length.out=8)
-jump = c(0,0,2.5,0,3,0,0,2.8,-2.5)
-beta1 = c(1,-1,1.5,-2,-0.2,1.2,-0.5,1.2,0)/50
-signal = gen.signal(l,h,jump,beta1)
-noise = rnorm(length(signal),0,1)
-data = (signal+noise)
-## Modeling
-gamma = 25
-dy = diff(smth.gau(data,gamma),na.rm=T)
-ddy = diff(dy[!is.na(dy)])
-model2 = cpTest(x=ddy,order=2,gamma=gamma,alpha=0.1)
-breaks = est.pair(model2$vall,model2$peak,gamma)$cp
-slope = est.slope(data,breaks)
-model1 = dstem(data,type="mixture",gamma,alpha = 0.05)$type2
-model2 = dstem(data,type="mixture",gamma,alpha = 0.05)$type1
-##
-par(mfrow = c(1,3),mar=c(4,4,2,2))
-plot(data,col="grey",xlab="",ylab="",bty="n")
-title(xlab="t",ylab="y(t)",mgp=c(2.5,2.5,0),cex.lab=1.0)
-#
-segment = split(1:l,cut(1:l,breaks=c(1,h[c(2,4,7,8)],l),include.lowest = T))
-for(i in 1:length(segment)) lines(x=segment[[i]],y=signal[segment[[i]]],lwd=2,col="red")
-#
-b=15
-plot(dy,type="l",lwd=2,xlab="",ylab="",bty="n")
-title(xlab="t",ylab=latex2exp::TeX("$y'_{\\gamma}(t)"),mgp=c(2.5,2.5,0),cex.lab=1.0)
-abline(h=0,lty=1,lwd=2,col="lightgrey")
-peak = which.peaks(dy); val = which.peaks(dy,decreasing = T)
-points(peak,dy[peak],col=col3,pch=16,bg=col3)
-points(val,dy[val],col=col4,pch=16,bg=col4)
-tpeak = model1$peak; tval = model1$vall
-points(tpeak,dy[tpeak],col=col3,pch=24,bg=col3)
-points(tval,dy[tval],col=col4,pch=25,bg=col4)
-Tmin = h[8]; Tmax = h[c(2,4,7)]
-for(i in 1:length(Tmax)) rect(Tmax[i]-b,0,Tmax[i]+b,1,col="cyan",lwd=1.5,density=0)
-for(i in 1:length(Tmin)) rect(Tmin[i]-b,0,Tmin[i]+b,-1,col="pink",lwd=1.5,density=0)
-#
-segment = split(1:l,cut(1:l,breaks=c(1,h,l),include.lowest = T))
-for(i in 1:length(segment)) lines(x=segment[[i]],y=rep(beta1[i],length(segment[[i]])),
-                                 lwd=2,col="darkgrey")
-#
-plot(ddy,type="l",lwd=2,xlab="",ylab="",bty="n")
-title(xlab="t",ylab=latex2exp::TeX("$y''_{\\gamma}(t)"),mgp=c(2.5,2.5,0),cex.lab=1.0)
-abline(h=0,lty=1,lwd=2,col="lightgrey")
-peak = which.peaks(ddy); val = which.peaks(ddy,decreasing = T)
-points(peak,ddy[peak],col=col1,pch=16,bg=col1)
-points(val,ddy[val],col=col2,pch=16,bg=col2)
-tpeak = model2$peak; tval = model2$vall
-points(tpeak,ddy[tpeak],col=col1,pch=24,bg=col1)
-points(tval,ddy[tval],col=col2,pch=25,bg=col2)
-Tmin = h[c(1,3,6)]; Tmax = h[5]
-for(i in 1:length(Tmax)) rect(Tmax[i]-b,0,Tmax[i]+b,1,col="cyan",lwd=1.5,density=0)
-for(i in 1:length(Tmin)) rect(Tmin[i]-b,0,Tmin[i]+b,-1,col="pink",lwd=1.5,density=0)
-Tmax = c(model1$peak,model1$vall)
-for(i in 1:length(Tmax)) rect(Tmax[i]-2*gamma,0,Tmax[i]+1.5*gamma,1,col="grey",lwd=1.5,density=10)
-for(i in 1:length(Tmax)) rect(Tmax[i]-2*gamma,0,Tmax[i]+1.5*gamma,-1,col="grey",lwd=1.5,density=10)
-```
-
 
 
 ## Usage
