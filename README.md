@@ -7,7 +7,7 @@ A new generic and fast approach for multiple change points detection in linear m
 The core idea of our method is to transform the change points into local maxima/minima of the differential smoothed data. By performing multiple testing on the local maxima/minima, the significant ones are detected as change points.
 
 For example, a continuous change point (slope change) will be transformed into a local maximum/minimum in the second derivative of the smoothed data, while a noncontinuous change point (jump) will be transformed into a local maximum/minimum in the first derivative of the smoothed data.
-A toy example is illustrated in [toy1.pdf](https://github.com/zhibinghe/ChangePoint/files/8721035/illu1.pdf) and [toy2.pdf](https://github.com/zhibinghe/ChangePoint/files/8721085/Illu2_1.pdf). Detecion of change pints becomes the mulptiple testing problem of the local extrema.
+A toy example is illustrated in [toy1.pdf](https://github.com/zhibinghe/ChangePoint/files/8721035/illu1.pdf). Detecion of change pints becomes the mulptiple testing problem of the local extrema.
 
 # Usage
 
